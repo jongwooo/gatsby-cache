@@ -1,0 +1,20 @@
+{
+  "name": "gatsby-cache",
+  "private": true,
+  "version": "0.0.0",
+  "description": "A GitHub Action that caching build outputs for Gatsby Incremental Build",
+  "author": "jongwooo <jongwooo.han@gmail.com>",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jongwooo/gatsby-cache.git"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jongwooo/gatsby-cache/issues"
+  },
+  "homepage": "https://github.com/jongwooo/gatsby-cache#readme"
+}
