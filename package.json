@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/jongwooo/gatsby-cache/issues"
   },
-  "homepage": "https://github.com/jongwooo/gatsby-cache#readme"
+  "homepage": "https://github.com/jongwooo/gatsby-cache#readme",
+  "devDependencies": {
+    "typescript": "^4.9.3"
+  }
 }
