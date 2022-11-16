@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jongwooo/gatsby-cache#readme",
   "devDependencies": {
+    "@types/node": "^18.11.9",
     "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
