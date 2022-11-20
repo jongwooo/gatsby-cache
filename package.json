@@ -2,11 +2,12 @@
   "name": "gatsby-cache",
   "private": true,
   "version": "0.0.0",
-  "description": "A GitHub Action that caching build outputs for Gatsby Incremental Build",
+  "description": "Cache build outputs for Gatsby's Conditional Page Build",
   "author": "jongwooo <jongwooo.han@gmail.com>",
   "scripts": {
     "format": "prettier --write 'src/**/*.ts'",
-    "lint": "tsc --noEmit && eslint 'src/**/*.ts'"
+    "lint": "tsc --noEmit && eslint 'src/**/*.ts'",
+    "build": "ncc build -o dist/restore src/restore.ts && ncc build -o dist/save src/save.ts"
   },
   "repository": {
     "type": "git",
@@ -22,10 +23,16 @@
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
+    "@vercel/ncc": "^0.34.0",
     "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.7.1",
     "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "@actions/cache": "^3.0.6",
+    "@actions/core": "^1.10.0",
+    "@actions/glob": "^0.3.0"
   }
 }

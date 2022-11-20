@@ -1,0 +1,22 @@
+name: "Gatsby Cache"
+description: "Cache build outputs for Gatsby's Conditional Page Build."
+author: "jongwooo <jongwooo.han@gmail.com>"
+inputs:
+  use-cache:
+    description: "Set this option if you want the action to disable conditional page build."
+    required: false
+    default: true
+  prefix:
+    description: "Prefix for cache key in case multiple workflows pushing cache in parallel."
+    required: false
+outputs:
+  cache-hit:
+    description: "A boolean value to indicate if a cache was hit."
+runs:
+  using: "node16"
+  main: "dist/restore/index.js"
+  post: "dist/save/index.js"
+  post-if: success()
+branding:
+  icon: "archive"
+  color: "purple"
