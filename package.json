@@ -6,7 +6,8 @@
   "author": "jongwooo <jongwooo.han@gmail.com>",
   "scripts": {
     "format": "prettier --write 'src/**/*.ts'",
-    "lint": "tsc --noEmit && eslint 'src/**/*.ts'"
+    "lint": "tsc --noEmit && eslint 'src/**/*.ts'",
+    "build": "ncc build -o dist/restore src/restore.ts && ncc build -o dist/save src/save.ts"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
+    "@vercel/ncc": "^0.34.0",
     "eslint": "^8.27.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
