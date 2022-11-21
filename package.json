@@ -13,7 +13,12 @@
     "type": "git",
     "url": "git+https://github.com/jongwooo/gatsby-cache.git"
   },
-  "keywords": [],
+  "keywords": [
+    "gatsbyjs",
+    "build-cache",
+    "github-actions",
+    "conditional-page-build"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jongwooo/gatsby-cache/issues"
