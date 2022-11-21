@@ -1,4 +1,59 @@
 # gatsby-cache
 
-Cache build outputs for Gatsby's Conditional Page Build.
+This action allows caching build outputs for Gatsby's [Conditional Page Build](https://www.gatsbyjs.com/docs/reference/release-notes/v3.0/#incremental-builds-in-oss).
 
+[![LICENSE](https://img.shields.io/github/license/jongwooo/gatsby-cache?color=blue)](LICENSE)
+[![CodeFactor](https://www.codefactor.io/repository/github/jongwooo/gatsby-cache/badge)](https://www.codefactor.io/repository/github/jongwooo/gatsby-cache)
+[![Integration Test Status](https://github.com/jongwooo/gatsby-cache/actions/workflows/integration-test.yaml/badge.svg)](https://github.com/jongwooo/gatsby-cache/actions/workflows/integration-test.yaml)
+[![GitHub stars](https://img.shields.io/github/stars/jongwooo/gatsby-cache?style=social)](https://github.com/jongwooo/gatsby-cache)
+
+## Usage
+
+### Pre-requisites
+
+Create a workflow `.yml` file in your repositories `.github/workflows` directory. For more information, reference the GitHub Help Documentation for [Creating a workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file).
+
+### Inputs
+
+- **`use-cache`** - A boolean value to enable/disable conditional page build.
+- **`prefix`** - A string value of prefix for cache key in case multiple workflows pushing cache in parallel.
+
+### Outputs
+
+- **`cache-hit`** - A boolean value to indicate an exact match was found for the key.
+
+### Cache Details
+
+This action currently caches the following directories:
+
+- `.cache` (cache of data and rendered assets)
+- `public` (output of the build process)
+
+### Example workflow
+
+```yaml
+- uses: actions/checkout@v3
+
+- name: Set up Node.js
+  uses: actions/setup-node@v3
+  with:
+   node-version: 18
+
+- uses: jongwooo/gatsby-cache@v1
+  with:
+   prefix: build
+
+- name: Install dependencies
+  run: yarn install
+
+- name: Build
+  run: yarn build
+```
+
+## Contributing
+
+Check out [Contributing guide](.github/CONTRIBUTING.md) for ideas on contributing and setup steps for getting our repositories up.
+
+## License
+
+Licensed under the [MIT License](LICENSE).
