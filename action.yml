@@ -1,5 +1,5 @@
 name: "Gatsby Cache"
-description: "Cache build outputs for Gatsby's Conditional Page Build."
+description: "Cache build outputs for Gatsby\'s Conditional Page Build."
 author: "jongwooo <jongwooo.han@gmail.com>"
 inputs:
   use-cache:
