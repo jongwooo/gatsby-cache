@@ -3,15 +3,15 @@ description: "Cache build outputs for Gatsby's Conditional Page Build."
 author: "jongwooo <jongwooo.han@gmail.com>"
 inputs:
   use-cache:
-    description: "Set this option if you want the action to disable conditional page build."
+    description: "A boolean value to enable/disable conditional page build."
     required: false
     default: true
   prefix:
-    description: "Prefix for cache key in case multiple workflows pushing cache in parallel."
+    description: "A string value of prefix for cache key in case multiple workflows pushing cache in parallel."
     required: false
 outputs:
   cache-hit:
-    description: "A boolean value to indicate if a cache was hit."
+    description: "A boolean value to indicate an exact match was found for the key."
 runs:
   using: "node16"
   main: "dist/restore/index.js"
