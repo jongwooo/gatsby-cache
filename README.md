@@ -15,12 +15,12 @@ Create a workflow `.yml` file in your repositories `.github/workflows` directory
 
 ### Inputs
 
-- **`use-cache`** - A boolean value to enable/disable conditional page build.
-- **`prefix`** - A string value of prefix for cache key in case multiple workflows pushing cache in parallel.
+- `use-cache` - A boolean value to enable/disable conditional page build.
+- `prefix` - A string value of prefix for cache key in case multiple workflows pushing cache in parallel.
 
 ### Outputs
 
-- **`cache-hit`** - A boolean value to indicate an exact match was found for the key.
+- `cache-hit` - A boolean value to indicate an exact match was found for the key.
 
 ### Cache Details
 
