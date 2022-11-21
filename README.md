@@ -39,7 +39,7 @@ This action currently caches the following directories:
   with:
    node-version: 18
 
-- uses: jongwooo/gatsby-cache@v1
+- uses: jongwooo/gatsby-cache@v1.0.0
   with:
    prefix: build
 
