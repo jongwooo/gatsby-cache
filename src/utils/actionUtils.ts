@@ -70,6 +70,17 @@ Otherwise please upgrade to GHES version >= 3.5 and If you are also using Github
   return true;
 }
 
+export function getInputAsArray(
+  name: string,
+  options?: core.InputOptions
+): string[] {
+  return core
+    .getInput(name, options)
+    .split("\n")
+    .map((s) => s.replace(/^!\s+/, "!").trim())
+    .filter((x) => x !== "");
+}
+
 export async function getBuildOutputPaths(): Promise<string[]> {
   const targetPaths: string[] = [".cache", "public"];
   const buildOutputPaths: string[] = [];

@@ -1,5 +1,7 @@
 export enum Inputs {
   UseCache = "use-cache",
+  Key = "key",
+  RestoreKeys = "restore-keys",
 }
 
 export enum Outputs {
