@@ -6,9 +6,6 @@ inputs:
     description: "A boolean value to enable/disable conditional page build."
     required: false
     default: true
-  prefix:
-    description: "A string value of prefix for cache key in case multiple workflows pushing cache in parallel."
-    required: false
 outputs:
   cache-hit:
     description: "A boolean value to indicate an exact match was found for the key."
