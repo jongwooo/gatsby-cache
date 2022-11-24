@@ -6,6 +6,12 @@ inputs:
     description: "A boolean value to enable/disable conditional page build."
     required: false
     default: true
+  key:
+    description: "An explicit key for restoring and saving the cache."
+    required: false
+  restore-keys:
+    description: "An ordered list of keys to use for restoring stale cache if no cache hit occurred for key."
+    required: false
 outputs:
   cache-hit:
     description: "A boolean value to indicate an exact match was found for the key."
