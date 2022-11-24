@@ -16,7 +16,6 @@ Create a workflow `.yml` file in your repositories `.github/workflows` directory
 ### Inputs
 
 - `use-cache` - A boolean value to enable/disable conditional page build.
-- `prefix` - A string value of prefix for cache key in case multiple workflows pushing cache in parallel.
 
 ### Outputs
 
@@ -39,9 +38,7 @@ This action currently caches the following directories:
   with:
    node-version: 18
 
-- uses: jongwooo/gatsby-cache@v1.0.0
-  with:
-   prefix: build
+- uses: jongwooo/gatsby-cache@main
 
 - name: Install dependencies
   run: yarn install

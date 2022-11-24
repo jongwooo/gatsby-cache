@@ -64141,7 +64141,6 @@ exports.State = exports.Outputs = exports.Inputs = void 0;
 var Inputs;
 (function (Inputs) {
     Inputs["UseCache"] = "use-cache";
-    Inputs["Prefix"] = "prefix";
 })(Inputs = exports.Inputs || (exports.Inputs = {}));
 var Outputs;
 (function (Outputs) {

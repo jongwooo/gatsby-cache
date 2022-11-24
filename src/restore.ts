@@ -13,11 +13,6 @@ async function run(): Promise<void> {
     const useCache: boolean = core.getBooleanInput(Inputs.UseCache);
     utils.setBuildMode(useCache);
 
-    let prefix: string = core.getInput(Inputs.Prefix);
-    if (prefix !== "") {
-      prefix += "-";
-    }
-
     const platform: string | undefined = process.env.RUNNER_OS;
     if (!platform) {
       return;
@@ -25,7 +20,7 @@ async function run(): Promise<void> {
 
     const hash: string = await utils.createHash();
 
-    const baseKey: string | undefined = `${prefix}${platform}-gatsby-build-`;
+    const baseKey: string | undefined = `${platform}-gatsby-build-`;
     const primaryKey: string | undefined = `${baseKey}${hash}`;
     core.debug(`primary key is ${primaryKey}`);
     core.saveState(State.CachePrimaryKey, primaryKey);

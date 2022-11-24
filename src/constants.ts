@@ -1,6 +1,5 @@
 export enum Inputs {
   UseCache = "use-cache",
-  Prefix = "prefix",
 }
 
 export enum Outputs {

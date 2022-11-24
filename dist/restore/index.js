@@ -64141,7 +64141,6 @@ exports.State = exports.Outputs = exports.Inputs = void 0;
 var Inputs;
 (function (Inputs) {
     Inputs["UseCache"] = "use-cache";
-    Inputs["Prefix"] = "prefix";
 })(Inputs = exports.Inputs || (exports.Inputs = {}));
 var Outputs;
 (function (Outputs) {
@@ -64197,16 +64196,12 @@ async function run() {
         }
         const useCache = core.getBooleanInput(constants_1.Inputs.UseCache);
         utils.setBuildMode(useCache);
-        let prefix = core.getInput(constants_1.Inputs.Prefix);
-        if (prefix !== "") {
-            prefix += "-";
-        }
         const platform = process.env.RUNNER_OS;
         if (!platform) {
             return;
         }
         const hash = await utils.createHash();
-        const baseKey = `${prefix}${platform}-gatsby-build-`;
+        const baseKey = `${platform}-gatsby-build-`;
         const primaryKey = `${baseKey}${hash}`;
         core.debug(`primary key is ${primaryKey}`);
         core.saveState(constants_1.State.CachePrimaryKey, primaryKey);
