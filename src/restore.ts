@@ -10,23 +10,27 @@ async function run(): Promise<void> {
       return;
     }
 
-    const useCache: boolean = core.getBooleanInput(Inputs.UseCache);
-    utils.setBuildMode(useCache);
-
     const platform: string | undefined = process.env.RUNNER_OS;
     if (!platform) {
       return;
     }
 
-    const hash: string = await utils.createHash();
+    const useCache: boolean = core.getBooleanInput(Inputs.UseCache);
+    utils.setBuildMode(useCache);
 
-    const baseKey: string | undefined = `${platform}-gatsby-build-`;
-    const primaryKey: string | undefined = `${baseKey}${hash}`;
+    const cachePaths: string[] = await utils.getBuildOutputPaths();
+
+    let primaryKey: string = core.getInput(Inputs.Key);
+    if (!primaryKey) {
+      const fileHash: string = await utils.createHash();
+      primaryKey = `${platform}-gatsby-build-${fileHash}`;
+    }
+
     core.debug(`primary key is ${primaryKey}`);
     core.saveState(State.CachePrimaryKey, primaryKey);
 
-    const restoreKeys: string[] = [baseKey];
-    const cachePaths: string[] = await utils.getBuildOutputPaths();
+    const restoreKeys: string[] = utils.getInputAsArray(Inputs.RestoreKeys);
+
     const cacheKey: string | undefined = await cache.restoreCache(
       cachePaths,
       primaryKey,
