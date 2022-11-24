@@ -4,7 +4,7 @@ This action allows caching build outputs for Gatsby's [Conditional Page Build](h
 
 [![LICENSE](https://img.shields.io/github/license/jongwooo/gatsby-cache?color=blue)](LICENSE)
 [![CodeFactor](https://www.codefactor.io/repository/github/jongwooo/gatsby-cache/badge)](https://www.codefactor.io/repository/github/jongwooo/gatsby-cache)
-[![Integration Test Status](https://github.com/jongwooo/gatsby-cache/actions/workflows/integration-test.yaml/badge.svg)](https://github.com/jongwooo/gatsby-cache/actions/workflows/integration-test.yaml)
+[![PR Status](https://github.com/jongwooo/gatsby-cache/actions/workflows/pr.yml/badge.svg)](https://github.com/jongwooo/gatsby-cache/actions/workflows/pr.yml)
 [![GitHub stars](https://img.shields.io/github/stars/jongwooo/gatsby-cache?style=social)](https://github.com/jongwooo/gatsby-cache)
 
 ## Usage
