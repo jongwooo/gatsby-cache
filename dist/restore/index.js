@@ -64141,6 +64141,8 @@ exports.State = exports.Outputs = exports.Inputs = void 0;
 var Inputs;
 (function (Inputs) {
     Inputs["UseCache"] = "use-cache";
+    Inputs["Key"] = "key";
+    Inputs["RestoreKeys"] = "restore-keys";
 })(Inputs = exports.Inputs || (exports.Inputs = {}));
 var Outputs;
 (function (Outputs) {
@@ -64194,19 +64196,21 @@ async function run() {
             utils.setCacheHitOutput(false);
             return;
         }
-        const useCache = core.getBooleanInput(constants_1.Inputs.UseCache);
-        utils.setBuildMode(useCache);
         const platform = process.env.RUNNER_OS;
         if (!platform) {
             return;
         }
-        const hash = await utils.createHash();
-        const baseKey = `${platform}-gatsby-build-`;
-        const primaryKey = `${baseKey}${hash}`;
+        const useCache = core.getBooleanInput(constants_1.Inputs.UseCache);
+        utils.setBuildMode(useCache);
+        const cachePaths = await utils.getBuildOutputPaths();
+        let primaryKey = core.getInput(constants_1.Inputs.Key);
+        if (!primaryKey) {
+            const fileHash = await utils.createHash();
+            primaryKey = `${platform}-gatsby-build-${fileHash}`;
+        }
         core.debug(`primary key is ${primaryKey}`);
         core.saveState(constants_1.State.CachePrimaryKey, primaryKey);
-        const restoreKeys = [baseKey];
-        const cachePaths = await utils.getBuildOutputPaths();
+        const restoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
         const cacheKey = await cache.restoreCache(cachePaths, primaryKey, restoreKeys);
         if (!cacheKey) {
             core.info(`Cache not found for keys: ${[primaryKey, ...restoreKeys].join(", ")}`);
@@ -64258,7 +64262,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createHash = exports.getBuildOutputPaths = exports.isCacheFeatureAvailable = exports.logWarning = exports.getCacheState = exports.setCacheHitOutput = exports.setCacheState = exports.setBuildMode = exports.isExactKeyMatch = exports.isGhes = void 0;
+exports.createHash = exports.getBuildOutputPaths = exports.getInputAsArray = exports.isCacheFeatureAvailable = exports.logWarning = exports.getCacheState = exports.setCacheHitOutput = exports.setCacheState = exports.setBuildMode = exports.isExactKeyMatch = exports.isGhes = void 0;
 const cache = __importStar(__nccwpck_require__(7799));
 const core = __importStar(__nccwpck_require__(2186));
 const glob = __importStar(__nccwpck_require__(8090));
@@ -64320,6 +64324,14 @@ Otherwise please upgrade to GHES version >= 3.5 and If you are also using Github
     return true;
 }
 exports.isCacheFeatureAvailable = isCacheFeatureAvailable;
+function getInputAsArray(name, options) {
+    return core
+        .getInput(name, options)
+        .split("\n")
+        .map((s) => s.replace(/^!\s+/, "!").trim())
+        .filter((x) => x !== "");
+}
+exports.getInputAsArray = getInputAsArray;
 async function getBuildOutputPaths() {
     const targetPaths = [".cache", "public"];
     const buildOutputPaths = [];
