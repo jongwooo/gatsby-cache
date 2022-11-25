@@ -5,7 +5,8 @@
   "description": "Cache build outputs for Gatsby's Conditional Page Build",
   "author": "jongwooo <jongwooo.han@gmail.com>",
   "scripts": {
-    "format": "prettier --write 'src/**/*.ts'",
+    "format": "prettier --check 'src/**/*.ts'",
+	"format:fix": "prettier --write 'src/**/*.ts'",
     "lint": "tsc --noEmit && eslint 'src/**/*.ts'",
     "build": "ncc build -o dist/restore src/restore.ts && ncc build -o dist/save src/save.ts"
   },
