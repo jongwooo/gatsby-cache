@@ -3,6 +3,9 @@ import * as core from "@actions/core";
 import * as utils from "./utils/actionUtils";
 import { State, Inputs } from "./constants";
 
+type Platform = "Linux" | "Windows" | "macOS";
+type BaseKey = `${Platform}-gatsby-build-`;
+
 async function run(): Promise<void> {
   try {
     if (!utils.isCacheFeatureAvailable()) {
@@ -10,26 +13,24 @@ async function run(): Promise<void> {
       return;
     }
 
-    const platform: string | undefined = process.env.RUNNER_OS;
-    if (!platform) {
-      return;
-    }
-
     const useCache: boolean = core.getBooleanInput(Inputs.UseCache);
     utils.setBuildMode(useCache);
 
     const cachePaths: string[] = await utils.getBuildOutputPaths();
+    const restoreKeys: string[] = utils.getInputAsArray(Inputs.RestoreKeys);
 
     let primaryKey: string = core.getInput(Inputs.Key);
     if (!primaryKey) {
+      const platform: Platform = process.env.RUNNER_OS as Platform;
+      const baseKey: BaseKey = `${platform}-gatsby-build-`;
       const fileHash: string = await utils.createHash();
-      primaryKey = `${platform}-gatsby-build-${fileHash}`;
+
+      restoreKeys.push(baseKey);
+      primaryKey = `${baseKey}${fileHash}`;
     }
 
     core.debug(`primary key is ${primaryKey}`);
     core.saveState(State.CachePrimaryKey, primaryKey);
-
-    const restoreKeys: string[] = utils.getInputAsArray(Inputs.RestoreKeys);
 
     const cacheKey: string | undefined = await cache.restoreCache(
       cachePaths,
