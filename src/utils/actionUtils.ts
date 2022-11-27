@@ -108,17 +108,20 @@ export async function createHash(): Promise<string> {
     followSymbolicLinks: false,
   });
 
-  const hasher = crypto.createHash("sha256");
+  const hasher: crypto.Hash = crypto.createHash("sha256");
   let hasMatch = false;
 
   for await (const file of globber.globGenerator()) {
     core.debug(`Processing ${file}`);
 
-    const hash = crypto.createHash("sha256");
-    const pipeline = util.promisify(stream.pipeline);
+    const hash: crypto.Hash = crypto.createHash("sha256");
+    const pipeline: (
+      readStream: fs.ReadStream,
+      hash: crypto.Hash
+    ) => Promise<void> = util.promisify(stream.pipeline);
     await pipeline(fs.createReadStream(file), hash);
-    hasher.write(hash.digest());
 
+    hasher.write(hash.digest());
     hasMatch = true;
   }
 
