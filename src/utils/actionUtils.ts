@@ -8,8 +8,6 @@ import util from "util";
 import path from "path";
 import { Outputs, State } from "../constants";
 
-const WORKSPACE: string = process.cwd() || "";
-
 export function isGhes(): boolean {
   const url: string = process.env.GITHUB_SERVER_URL ?? "https://github.com";
   const ghUrl: URL = new URL(url);
@@ -86,7 +84,7 @@ export async function getBuildOutputPaths(): Promise<string[]> {
   const buildOutputPaths: string[] = [];
 
   for await (const target of targetPaths) {
-    buildOutputPaths.push(path.join(WORKSPACE, target));
+    buildOutputPaths.push(path.join(process.cwd(), target));
   }
 
   return buildOutputPaths;
@@ -101,7 +99,7 @@ export async function createHash(): Promise<string> {
   const patterns: string[] = [];
 
   for await (const targetFile of targetFilePatterns) {
-    patterns.push(path.join(WORKSPACE, targetFile));
+    patterns.push(path.join(process.cwd(), targetFile));
   }
 
   const globber: glob.Globber = await glob.create(patterns.join("\n"), {
