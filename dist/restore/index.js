@@ -64196,21 +64196,20 @@ async function run() {
             utils.setCacheHitOutput(false);
             return;
         }
-        const platform = process.env.RUNNER_OS;
-        if (!platform) {
-            return;
-        }
         const useCache = core.getBooleanInput(constants_1.Inputs.UseCache);
         utils.setBuildMode(useCache);
         const cachePaths = await utils.getBuildOutputPaths();
+        const restoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
         let primaryKey = core.getInput(constants_1.Inputs.Key);
         if (!primaryKey) {
+            const platform = process.env.RUNNER_OS;
+            const baseKey = `${platform}-gatsby-build-`;
             const fileHash = await utils.createHash();
-            primaryKey = `${platform}-gatsby-build-${fileHash}`;
+            restoreKeys.push(baseKey);
+            primaryKey = `${baseKey}${fileHash}`;
         }
         core.debug(`primary key is ${primaryKey}`);
         core.saveState(constants_1.State.CachePrimaryKey, primaryKey);
-        const restoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
         const cacheKey = await cache.restoreCache(cachePaths, primaryKey, restoreKeys);
         if (!cacheKey) {
             core.info(`Cache not found for keys: ${[primaryKey, ...restoreKeys].join(", ")}`);
@@ -64272,7 +64271,6 @@ const stream_1 = __importDefault(__nccwpck_require__(2781));
 const util_1 = __importDefault(__nccwpck_require__(3837));
 const path_1 = __importDefault(__nccwpck_require__(1017));
 const constants_1 = __nccwpck_require__(9042);
-const WORKSPACE = process.cwd() || "";
 function isGhes() {
     const url = process.env.GITHUB_SERVER_URL ?? "https://github.com";
     const ghUrl = new URL(url);
@@ -64312,16 +64310,16 @@ function logWarning(message) {
 }
 exports.logWarning = logWarning;
 function isCacheFeatureAvailable() {
-    if (!cache.isFeatureAvailable()) {
-        if (isGhes()) {
-            logWarning(`Cache action is only supported on GHES version >= 3.5. If you are on version >=3.5 Please check with GHES admin if Actions cache service is enabled or not.
+    if (cache.isFeatureAvailable()) {
+        return true;
+    }
+    if (isGhes()) {
+        logWarning(`Cache action is only supported on GHES version >= 3.5. If you are on version >=3.5 Please check with GHES admin if Actions cache service is enabled or not.
 Otherwise please upgrade to GHES version >= 3.5 and If you are also using Github Connect, please unretire the actions/cache namespace before upgrade (see https://docs.github.com/en/enterprise-server@3.5/admin/github-actions/managing-access-to-actions-from-githubcom/enabling-automatic-access-to-githubcom-actions-using-github-connect#automatic-retirement-of-namespaces-for-actions-accessed-on-githubcom)`);
-            return false;
-        }
-        logWarning("An internal error has occurred in cache backend. Please check https://www.githubstatus.com/ for any ongoing issue in actions.");
         return false;
     }
-    return true;
+    logWarning("An internal error has occurred in cache backend. Please check https://www.githubstatus.com/ for any ongoing issue in actions.");
+    return false;
 }
 exports.isCacheFeatureAvailable = isCacheFeatureAvailable;
 function getInputAsArray(name, options) {
@@ -64336,7 +64334,7 @@ async function getBuildOutputPaths() {
     const targetPaths = [".cache", "public"];
     const buildOutputPaths = [];
     for await (const target of targetPaths) {
-        buildOutputPaths.push(path_1.default.join(WORKSPACE, target));
+        buildOutputPaths.push(path_1.default.join(process.cwd(), target));
     }
     return buildOutputPaths;
 }
@@ -64349,7 +64347,7 @@ async function createHash() {
     ];
     const patterns = [];
     for await (const targetFile of targetFilePatterns) {
-        patterns.push(path_1.default.join(WORKSPACE, targetFile));
+        patterns.push(path_1.default.join(process.cwd(), targetFile));
     }
     const globber = await glob.create(patterns.join("\n"), {
         followSymbolicLinks: false,
