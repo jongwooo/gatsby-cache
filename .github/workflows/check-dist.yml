@@ -40,7 +40,7 @@ jobs:
         id: diff
 
       - uses: actions/upload-artifact@v3
-        if: ${{ failure() && steps.diff.conclusion == "failure" }}
+        if: ${{ failure() && steps.diff.conclusion == 'failure' }}
         with:
           name: dist
           path: dist/
