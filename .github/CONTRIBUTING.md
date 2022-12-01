@@ -29,28 +29,50 @@ $ npm run lint
 
 ## Commit message rules
 
--   The first part of the commit message begins with an infinitive, and the first letter is capitalized. It starts with commands such as `Fix`, `Add` and `Change` instead of past tense such as `Fixed`, `Added` and `Changed`. In addition, It does not exceed 50 characters and does not end with a period (.).
+Each commit message consists of a **header**, a **body** and a **footer**. 
+The header has a special format that includes a **type**, a **scope** and a **subject**:
 
-    -   `Fixed` -> `Fix`
-    -   `Added` -> `Add`
-    -   `Changed` -> `Change`
+```
+<type>(<scope>): <subject>
+<BLANK LINE>
+<body>
+<BLANK LINE>
+<footer>
+```
 
--   Consider starting the commit message with a type label:
+Note that [`check-commit-messages.sh`](/scripts/check-commit-messages.sh) is
+used to check conformance of commits in the pull request to commit message
+format.
 
-    -   `feat:` prefix.
-        -   When create a new feature.
-    -   `fix:` prefix.
-        -   When fixing a bug.
-    -   `docs:` prefix.
-        -   When adding a document.
-    -   `style:` prefix.
-        -   When change the code format.
-    -   `refactor:` prefix.
-        -   When refactoring production code.
-    -   `test:` prefix.
-        -   When adding or refactoring tests.
-    -   `chore:` prefix.
-        -   When update a build test or setting up package manager.
+### Type
+
+Must be one of the following:
+
+- **feat**: When create a new feature.
+- **fix**: When fix a bug.
+- **docs**: When add or change documentation.
+- **style**: When improve code style.
+- **refactor**: When improve code without add or change feature.
+- **perf**: When improve performance.
+- **test**: When add or change test code.
+- **chore**: When change build process or tool.
+- **ci**: When change CI configuration files and scripts.
+- **revert**: When revert a commit.
+
+### Scope
+
+The scope could be anything specifying place of the commit change. 
+For example `deps-dev`, `workflows`, etc...
+
+### Subject
+
+The first part of the commit message begins with an infinitive, and the first letter is capitalized. 
+It starts with commands such as `Fix`, `Add` and `Change` instead of past tense such as `Fixed`, `Added` 
+and `Changed`. In addition, It does not exceed 72 characters and does not end with a period (.).
+
+-   `Fixed` -> `Fix`
+-   `Added` -> `Add`
+-   `Changed` -> `Change`
 
 ## Thanks!
 
