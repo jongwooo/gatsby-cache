@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-REGEX_NORMAL="(feat|fix|docs|style|refactor|perf|test|chore|ci|revert)(\(.+\))?:.{1,68})"
-REGEX_MERGE_FROM="(Merge pull request #[[:digit:]]{1,10}( from .*/.*)?"
-REGEX_MERGE_INTO="(Merge branch \'.*\'( into .*/.*)?"
-REGEX="^(${REGEX_NORMAL}|${REGEX_MERGE_FROM}|${REGEX_MERGE_INTO})$"
+REGEX_NORMAL="(feat|fix|docs|style|refactor|perf|test|chore|ci|revert)(\(.+\))?:.{1,68}"
+REGEX_MERGE_FROM="Merge pull request #[[:digit:]]{1,10}( from .*/.*)?"
+REGEX_MERGE_INTO="Merge branch \'.*\'( into .*/.*)?"
+REGEX="^${REGEX_NORMAL}|${REGEX_MERGE_FROM}|${REGEX_MERGE_INTO}$"
 
 echo
 
