@@ -1,10 +1,5 @@
 import * as cache from "@actions/cache";
 import * as core from "@actions/core";
-import * as glob from "@actions/glob";
-import crypto from "crypto";
-import fs from "fs";
-import stream from "stream";
-import util from "util";
 import path from "path";
 import { Outputs, State } from "../constants";
 
@@ -88,46 +83,4 @@ export async function getBuildOutputPaths(): Promise<string[]> {
   }
 
   return buildOutputPaths;
-}
-
-export async function createHash(): Promise<string> {
-  const targetFilePatterns = [
-    "package.json",
-    "gatsby-config.(j|t)s",
-    "gatsby-node.(j|t)s",
-  ];
-  const patterns: string[] = [];
-
-  for await (const targetFile of targetFilePatterns) {
-    patterns.push(path.join(process.cwd(), targetFile));
-  }
-
-  const globber: glob.Globber = await glob.create(patterns.join("\n"), {
-    followSymbolicLinks: false,
-  });
-
-  const hasher: crypto.Hash = crypto.createHash("sha256");
-  let hasMatch = false;
-
-  for await (const file of globber.globGenerator()) {
-    core.debug(`Processing ${file}`);
-
-    const hash: crypto.Hash = crypto.createHash("sha256");
-    const pipeline: (
-      readStream: fs.ReadStream,
-      hash: crypto.Hash
-    ) => Promise<void> = util.promisify(stream.pipeline);
-    await pipeline(fs.createReadStream(file), hash);
-
-    hasher.write(hash.digest());
-    hasMatch = true;
-  }
-
-  hasher.end();
-
-  if (hasMatch) {
-    return hasher.digest("hex");
-  }
-
-  return "";
 }
