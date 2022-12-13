@@ -1,10 +1,9 @@
 import * as cache from "@actions/cache";
 import * as core from "@actions/core";
 import * as utils from "./utils/actionUtils";
-import { State, Inputs } from "./constants";
+import { Inputs, State } from "./constants";
 
 type Platform = "Linux" | "Windows" | "macOS";
-type BaseKey = `${Platform}-gatsby-build-`;
 
 async function run(): Promise<void> {
   try {
@@ -22,11 +21,7 @@ async function run(): Promise<void> {
     let primaryKey: string = core.getInput(Inputs.Key);
     if (!primaryKey) {
       const platform: Platform = process.env.RUNNER_OS as Platform;
-      const baseKey: BaseKey = `${platform}-gatsby-build-`;
-      const fileHash: string = await utils.createHash();
-
-      restoreKeys.push(baseKey);
-      primaryKey = `${baseKey}${fileHash}`;
+      primaryKey = `${platform}-gatsby-build-`;
     }
 
     core.debug(`primary key is ${primaryKey}`);
