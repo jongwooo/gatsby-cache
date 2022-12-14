@@ -14,4 +14,4 @@ jobs:
         run: |
           curl -s ${{ github.event.pull_request.commits_url }} |
             jq --raw-output '.[].sha' |
-            xargs ./scripts/check-commit-messages.sh
+            xargs ./.github/scripts/check-commit-messages.sh

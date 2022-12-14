@@ -40,7 +40,7 @@ The header has a special format that includes a **type**, a **scope** and a **su
 <footer>
 ```
 
-Note that [`check-commit-messages.sh`](/scripts/check-commit-messages.sh) is
+Note that [`check-commit-messages.sh`](/.github/scripts/check-commit-messages.sh) is
 used to check conformance of commits in the pull request to commit message
 format.
 
