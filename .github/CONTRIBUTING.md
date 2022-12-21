@@ -58,6 +58,7 @@ Must be one of the following:
 - **chore**: When change build process or tool.
 - **ci**: When change CI configuration files and scripts.
 - **revert**: When revert a commit.
+- **misc**: When something else entirely.
 
 ### Scope
 
