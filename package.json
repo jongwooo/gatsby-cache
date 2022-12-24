@@ -1,7 +1,7 @@
 {
   "name": "gatsby-cache",
   "private": true,
-  "version": "1.2.3",
+  "version": "1.3.0",
   "description": "Cache build outputs for Gatsby's Conditional Page Build",
   "author": "jongwooo <jongwooo.han@gmail.com>",
   "scripts": {
