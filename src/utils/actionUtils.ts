@@ -1,7 +1,7 @@
 import * as cache from "@actions/cache";
 import * as core from "@actions/core";
 import path from "path";
-import { Outputs, State } from "../constants";
+import { RefKey } from "../constants";
 
 export function isGhes(): boolean {
   const url: string = process.env.GITHUB_SERVER_URL ?? "https://github.com";
@@ -18,30 +18,24 @@ export function isExactKeyMatch(key: string, cacheKey?: string): boolean {
   );
 }
 
-export function setBuildMode(useCache: boolean): void {
-  process.env.GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES = String(useCache);
-}
-
-export function setCacheState(state: string): void {
-  core.saveState(State.CacheMatchedKey, state);
-}
-
-export function setCacheHitOutput(isCacheHit: boolean): void {
-  core.setOutput(Outputs.CacheHit, isCacheHit.toString());
-}
-
-export function getCacheState(): string | undefined {
-  const cacheKey: string = core.getState(State.CacheMatchedKey);
-  if (cacheKey) {
-    core.debug(`Cache state/key: ${cacheKey}`);
-    return cacheKey;
-  }
-
-  return undefined;
-}
-
 export function logWarning(message: string): void {
-  core.info(`[warning]${message}`);
+  const warningPrefix = "[warning]";
+  core.info(`${warningPrefix}${message}`);
+}
+
+export function isValidEvent(): boolean {
+  return RefKey in process.env && Boolean(process.env[RefKey]);
+}
+
+export function getInputAsArray(
+  name: string,
+  options?: core.InputOptions
+): string[] {
+  return core
+    .getInput(name, options)
+    .split("\n")
+    .map((s) => s.replace(/^!\s+/, "!").trim())
+    .filter((x) => x !== "");
 }
 
 export function isCacheFeatureAvailable(): boolean {
@@ -63,15 +57,8 @@ Otherwise please upgrade to GHES version >= 3.5 and If you are also using Github
   return false;
 }
 
-export function getInputAsArray(
-  name: string,
-  options?: core.InputOptions
-): string[] {
-  return core
-    .getInput(name, options)
-    .split("\n")
-    .map((s) => s.replace(/^!\s+/, "!").trim())
-    .filter((x) => x !== "");
+export function setBuildMode(useCache: boolean): void {
+  process.env.GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES = String(useCache);
 }
 
 export async function getBuildOutputPaths(): Promise<string[]> {
