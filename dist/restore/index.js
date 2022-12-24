@@ -62949,7 +62949,7 @@ module.exports.implForWrapper = function (wrapper) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.State = exports.Outputs = exports.Inputs = void 0;
+exports.RefKey = exports.Gatsby = exports.Platform = exports.Events = exports.State = exports.Outputs = exports.Inputs = void 0;
 var Inputs;
 (function (Inputs) {
     Inputs["UseCache"] = "use-cache";
@@ -62965,11 +62965,46 @@ var State;
     State["CachePrimaryKey"] = "CACHE_KEY";
     State["CacheMatchedKey"] = "CACHE_RESULT";
 })(State = exports.State || (exports.State = {}));
+var Events;
+(function (Events) {
+    Events["Key"] = "GITHUB_EVENT_NAME";
+})(Events = exports.Events || (exports.Events = {}));
+var Platform;
+(function (Platform) {
+    Platform["RunnerOs"] = "RUNNER_OS";
+})(Platform = exports.Platform || (exports.Platform = {}));
+var Gatsby;
+(function (Gatsby) {
+    Gatsby["CacheDir"] = ".cache";
+    Gatsby["PublicDir"] = "public";
+    Gatsby["Env"] = "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES";
+})(Gatsby = exports.Gatsby || (exports.Gatsby = {}));
+exports.RefKey = "GITHUB_REF";
 
 
 /***/ }),
 
 /***/ 4095:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const restoreImpl_1 = __importDefault(__nccwpck_require__(2357));
+const stateProvider_1 = __nccwpck_require__(1527);
+async function run() {
+    await (0, restoreImpl_1.default)(new stateProvider_1.StateProvider());
+}
+void run();
+exports["default"] = run;
+
+
+/***/ }),
+
+/***/ 2357:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -63002,10 +63037,15 @@ const cache = __importStar(__nccwpck_require__(7799));
 const core = __importStar(__nccwpck_require__(2186));
 const utils = __importStar(__nccwpck_require__(6850));
 const constants_1 = __nccwpck_require__(9042);
-async function run() {
+async function restoreImpl(stateProvider) {
     try {
         if (!utils.isCacheFeatureAvailable()) {
-            utils.setCacheHitOutput(false);
+            core.setOutput(constants_1.Outputs.CacheHit, "false");
+            return;
+        }
+        if (!utils.isValidEvent()) {
+            const eventName = process.env[constants_1.Events.Key] || "";
+            utils.logWarning(`Event Validation Error: The event type ${eventName} is not supported because it's not tied to a branch or tag ref.`);
             return;
         }
         const useCache = core.getBooleanInput(constants_1.Inputs.UseCache);
@@ -63014,26 +63054,77 @@ async function run() {
         const restoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
         let primaryKey = core.getInput(constants_1.Inputs.Key);
         if (!primaryKey) {
-            const platform = process.env.RUNNER_OS;
+            const platform = process.env[constants_1.Platform.RunnerOs];
             primaryKey = `${platform}-gatsby-build-`;
         }
         core.debug(`primary key is ${primaryKey}`);
-        core.saveState(constants_1.State.CachePrimaryKey, primaryKey);
+        stateProvider.setState(constants_1.State.CachePrimaryKey, primaryKey);
         const cacheKey = await cache.restoreCache(cachePaths, primaryKey, restoreKeys);
         if (!cacheKey) {
             core.info(`Cache not found for keys: ${[primaryKey, ...restoreKeys].join(", ")}`);
             return;
         }
-        utils.setCacheState(cacheKey);
+        stateProvider.setState(constants_1.State.CacheMatchedKey, cacheKey);
         const isExactKeyMatch = utils.isExactKeyMatch(primaryKey, cacheKey);
-        utils.setCacheHitOutput(isExactKeyMatch);
+        core.setOutput(constants_1.Outputs.CacheHit, isExactKeyMatch.toString());
         core.info(`Cache restored from key: ${cacheKey}`);
+        return cacheKey;
     }
     catch (error) {
         core.setFailed(error.message);
+        return;
     }
 }
-void run();
+exports["default"] = restoreImpl;
+
+
+/***/ }),
+
+/***/ 1527:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.StateProvider = void 0;
+const core = __importStar(__nccwpck_require__(2186));
+const constants_1 = __nccwpck_require__(9042);
+class StateProvider {
+    getCacheState() {
+        const cacheKey = this.getState(constants_1.State.CacheMatchedKey);
+        if (cacheKey) {
+            core.debug(`Cache state/key: ${cacheKey}`);
+            return cacheKey;
+        }
+        return undefined;
+    }
+    getState = core.getState;
+    setState = core.saveState;
+}
+exports.StateProvider = StateProvider;
 
 
 /***/ }),
@@ -63070,7 +63161,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getBuildOutputPaths = exports.getInputAsArray = exports.isCacheFeatureAvailable = exports.logWarning = exports.getCacheState = exports.setCacheHitOutput = exports.setCacheState = exports.setBuildMode = exports.isExactKeyMatch = exports.isGhes = void 0;
+exports.getBuildOutputPaths = exports.setBuildMode = exports.isCacheFeatureAvailable = exports.getInputAsArray = exports.isValidEvent = exports.logWarning = exports.isExactKeyMatch = exports.isGhes = void 0;
 const cache = __importStar(__nccwpck_require__(7799));
 const core = __importStar(__nccwpck_require__(2186));
 const path_1 = __importDefault(__nccwpck_require__(1017));
@@ -63088,31 +63179,23 @@ function isExactKeyMatch(key, cacheKey) {
         }) === 0);
 }
 exports.isExactKeyMatch = isExactKeyMatch;
-function setBuildMode(useCache) {
-    process.env.GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES = String(useCache);
-}
-exports.setBuildMode = setBuildMode;
-function setCacheState(state) {
-    core.saveState(constants_1.State.CacheMatchedKey, state);
-}
-exports.setCacheState = setCacheState;
-function setCacheHitOutput(isCacheHit) {
-    core.setOutput(constants_1.Outputs.CacheHit, isCacheHit.toString());
-}
-exports.setCacheHitOutput = setCacheHitOutput;
-function getCacheState() {
-    const cacheKey = core.getState(constants_1.State.CacheMatchedKey);
-    if (cacheKey) {
-        core.debug(`Cache state/key: ${cacheKey}`);
-        return cacheKey;
-    }
-    return undefined;
-}
-exports.getCacheState = getCacheState;
 function logWarning(message) {
-    core.info(`[warning]${message}`);
+    const warningPrefix = "[warning]";
+    core.info(`${warningPrefix}${message}`);
 }
 exports.logWarning = logWarning;
+function isValidEvent() {
+    return constants_1.RefKey in process.env && Boolean(process.env[constants_1.RefKey]);
+}
+exports.isValidEvent = isValidEvent;
+function getInputAsArray(name, options) {
+    return core
+        .getInput(name, options)
+        .split("\n")
+        .map((s) => s.replace(/^!\s+/, "!").trim())
+        .filter((x) => x !== "");
+}
+exports.getInputAsArray = getInputAsArray;
 function isCacheFeatureAvailable() {
     if (cache.isFeatureAvailable()) {
         return true;
@@ -63126,16 +63209,12 @@ Otherwise please upgrade to GHES version >= 3.5 and If you are also using Github
     return false;
 }
 exports.isCacheFeatureAvailable = isCacheFeatureAvailable;
-function getInputAsArray(name, options) {
-    return core
-        .getInput(name, options)
-        .split("\n")
-        .map((s) => s.replace(/^!\s+/, "!").trim())
-        .filter((x) => x !== "");
+function setBuildMode(useCache) {
+    process.env[constants_1.Gatsby.Env] = String(useCache);
 }
-exports.getInputAsArray = getInputAsArray;
+exports.setBuildMode = setBuildMode;
 async function getBuildOutputPaths() {
-    const targetPaths = [".cache", "public"];
+    const targetPaths = [constants_1.Gatsby.CacheDir, constants_1.Gatsby.PublicDir];
     const buildOutputPaths = [];
     for await (const target of targetPaths) {
         buildOutputPaths.push(path_1.default.join(process.cwd(), target));
