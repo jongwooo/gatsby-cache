@@ -1,7 +1,7 @@
 import * as cache from "@actions/cache";
 import * as core from "@actions/core";
 import path from "path";
-import { RefKey } from "../constants";
+import { Gatsby, RefKey } from "../constants";
 
 export function isGhes(): boolean {
   const url: string = process.env.GITHUB_SERVER_URL ?? "https://github.com";
@@ -58,11 +58,11 @@ Otherwise please upgrade to GHES version >= 3.5 and If you are also using Github
 }
 
 export function setBuildMode(useCache: boolean): void {
-  process.env.GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES = String(useCache);
+  process.env[Gatsby.Env] = String(useCache);
 }
 
 export async function getBuildOutputPaths(): Promise<string[]> {
-  const targetPaths: string[] = [".cache", "public"];
+  const targetPaths: string[] = [Gatsby.CacheDir, Gatsby.PublicDir];
   const buildOutputPaths: string[] = [];
 
   for await (const target of targetPaths) {

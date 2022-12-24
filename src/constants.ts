@@ -21,4 +21,10 @@ export enum Platform {
   RunnerOs = "RUNNER_OS",
 }
 
+export enum Gatsby {
+  CacheDir = ".cache",
+  PublicDir = "public",
+  Env = "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES",
+}
+
 export const RefKey = "GITHUB_REF";
