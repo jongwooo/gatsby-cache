@@ -2,12 +2,12 @@ import * as cache from "@actions/cache";
 import * as core from "@actions/core";
 import * as utils from "./utils/actionUtils";
 import { Events, Inputs, Outputs, Platform, State } from "./constants";
-import { StateProvider } from "./stateProvider";
+import { BaseStateProvider } from "./stateProvider";
 
 type Runner = "Linux" | "Windows" | "macOS";
 
 async function restoreImpl(
-  stateProvider: StateProvider
+  stateProvider: BaseStateProvider
 ): Promise<string | undefined> {
   try {
     if (!utils.isCacheFeatureAvailable()) {
