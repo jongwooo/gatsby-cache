@@ -63186,8 +63186,7 @@ async function restoreImpl(stateProvider) {
             utils.logWarning(`Event Validation Error: The event type ${eventName} is not supported because it's not tied to a branch or tag ref.`);
             return;
         }
-        const useCache = core.getBooleanInput(constants_1.Inputs.UseCache);
-        utils.setBuildMode(useCache);
+        utils.setConditionalPageBuild();
         const cachePaths = await utils.getBuildOutputPaths();
         const restoreKeys = utils.getInputAsArray(constants_1.Inputs.RestoreKeys);
         let primaryKey = core.getInput(constants_1.Inputs.Key);
@@ -63299,7 +63298,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getBuildOutputPaths = exports.setBuildMode = exports.isCacheFeatureAvailable = exports.getInputAsArray = exports.isValidEvent = exports.logWarning = exports.isExactKeyMatch = exports.isGhes = void 0;
+exports.getBuildOutputPaths = exports.setConditionalPageBuild = exports.isCacheFeatureAvailable = exports.getInputAsArray = exports.isValidEvent = exports.logWarning = exports.isExactKeyMatch = exports.isGhes = void 0;
 const cache = __importStar(__nccwpck_require__(7799));
 const core = __importStar(__nccwpck_require__(2186));
 const path_1 = __importDefault(__nccwpck_require__(1017));
@@ -63347,10 +63346,11 @@ Otherwise please upgrade to GHES version >= 3.5 and If you are also using Github
     return false;
 }
 exports.isCacheFeatureAvailable = isCacheFeatureAvailable;
-function setBuildMode(useCache) {
-    process.env[constants_1.Gatsby.Env] = String(useCache);
+function setConditionalPageBuild() {
+    process.env[constants_1.Gatsby.Env] = "true";
+    core.debug(`Set ${constants_1.Gatsby.Env}=${process.env[constants_1.Gatsby.Env]}`);
 }
-exports.setBuildMode = setBuildMode;
+exports.setConditionalPageBuild = setConditionalPageBuild;
 async function getBuildOutputPaths() {
     const targetPaths = [constants_1.Gatsby.CacheDir, constants_1.Gatsby.PublicDir];
     const buildOutputPaths = [];

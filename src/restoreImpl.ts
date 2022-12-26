@@ -23,8 +23,7 @@ async function restoreImpl(
       return;
     }
 
-    const useCache: boolean = core.getBooleanInput(Inputs.UseCache);
-    utils.setBuildMode(useCache);
+    utils.setConditionalPageBuild();
 
     const cachePaths: string[] = await utils.getBuildOutputPaths();
     const restoreKeys: string[] = utils.getInputAsArray(Inputs.RestoreKeys);

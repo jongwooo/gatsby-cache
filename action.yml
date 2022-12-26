@@ -2,10 +2,6 @@ name: "Gatsby Cache"
 description: "Cache build outputs for Gatsby's Conditional Page Build."
 author: "jongwooo <jongwooo.han@gmail.com>"
 inputs:
-  use-cache:
-    description: "A boolean value to enable/disable conditional page build."
-    required: false
-    default: true
   key:
     description: "An explicit key for restoring and saving the cache."
     required: false

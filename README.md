@@ -14,7 +14,6 @@ Create a workflow `.yml` file in your repositories `.github/workflows` directory
 
 ### Inputs
 
-- `use-cache` - A boolean value to enable/disable conditional page build.
 - `key` - An explicit key for restoring and saving the cache.
 - `restore-keys` - An ordered list of keys to use for restoring stale cache if no cache hit occurred for key.
 

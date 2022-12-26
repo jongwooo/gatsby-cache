@@ -57,8 +57,9 @@ Otherwise please upgrade to GHES version >= 3.5 and If you are also using Github
   return false;
 }
 
-export function setBuildMode(useCache: boolean): void {
-  process.env[Gatsby.Env] = String(useCache);
+export function setConditionalPageBuild(): void {
+  process.env[Gatsby.Env] = "true";
+  core.debug(`Set ${Gatsby.Env}=${process.env[Gatsby.Env]}`);
 }
 
 export async function getBuildOutputPaths(): Promise<string[]> {
