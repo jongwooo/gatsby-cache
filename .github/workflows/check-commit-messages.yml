@@ -3,15 +3,7 @@ name: Check commit messages
 on: pull_request
 
 jobs:
-  check-commit-messages:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Check PR commit messages
-        run: |
-          curl -s ${{ github.event.pull_request.commits_url }} |
-            jq --raw-output '.[].sha' |
-            xargs ./.github/scripts/check-commit-messages.sh
+  check-commit-messages-call:
+    uses: jongwooo/reusable-workflows/.github/workflows/check-commit-messages.yml@main
+    with:
+      commits-url: ${{ github.event.pull_request.commits_url }}
