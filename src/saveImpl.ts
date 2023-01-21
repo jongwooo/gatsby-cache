@@ -4,9 +4,7 @@ import * as utils from "./utils/actionUtils";
 import { Inputs, State } from "./constants";
 import { BaseStateProvider } from "./stateProvider";
 
-process.on("uncaughtException", (error: unknown) =>
-  utils.logWarning((error as Error).message)
-);
+process.on("uncaughtException", (e) => utils.logWarning(e.message));
 
 async function saveImpl(
   stateProvider: BaseStateProvider
@@ -17,9 +15,9 @@ async function saveImpl(
       return;
     }
 
-    const state: string | undefined = stateProvider.getCacheState();
+    const state = stateProvider.getCacheState();
 
-    const primaryKey: string =
+    const primaryKey =
       stateProvider.getState(State.CachePrimaryKey) ||
       core.getInput(Inputs.Key);
 
@@ -35,7 +33,7 @@ async function saveImpl(
       return;
     }
 
-    const cachePaths: string[] = await utils.getBuildOutputPaths();
+    const cachePaths = await utils.getBuildOutputPaths();
     cacheId = await cache.saveCache(cachePaths, primaryKey);
 
     if (cacheId != -1) {

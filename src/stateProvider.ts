@@ -9,7 +9,7 @@ export interface BaseStateProvider {
 
 export class StateProvider implements BaseStateProvider {
   getCacheState(): string | undefined {
-    const cacheKey: string = this.getState(State.CacheMatchedKey);
+    const cacheKey = this.getState(State.CacheMatchedKey);
     if (cacheKey) {
       core.debug(`Cache state/key: ${cacheKey}`);
       return cacheKey;

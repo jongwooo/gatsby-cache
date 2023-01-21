@@ -4,8 +4,8 @@ import path from "path";
 import { Gatsby, RefKey } from "../constants";
 
 export function isGhes(): boolean {
-  const url: string = process.env.GITHUB_SERVER_URL ?? "https://github.com";
-  const ghUrl: URL = new URL(url);
+  const url = process.env.GITHUB_SERVER_URL ?? "https://github.com";
+  const ghUrl = new URL(url);
   return ghUrl.hostname.toUpperCase() !== "GITHUB.COM";
 }
 
@@ -63,8 +63,8 @@ export function setConditionalPageBuild(): void {
 }
 
 export async function getBuildOutputPaths(): Promise<string[]> {
-  const targetPaths: string[] = [Gatsby.CacheDir, Gatsby.PublicDir];
-  const buildOutputPaths: string[] = [];
+  const targetPaths = [Gatsby.CacheDir, Gatsby.PublicDir];
+  const buildOutputPaths = [];
 
   for await (const target of targetPaths) {
     buildOutputPaths.push(path.join(process.cwd(), target));
