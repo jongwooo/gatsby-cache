@@ -16,7 +16,7 @@ async function restoreImpl(
     }
 
     if (!utils.isValidEvent()) {
-      const eventName: string = process.env[Events.Key] || "";
+      const eventName = process.env[Events.Key] || "";
       utils.logWarning(
         `Event Validation Error: The event type ${eventName} is not supported because it's not tied to a branch or tag ref.`
       );
@@ -25,12 +25,12 @@ async function restoreImpl(
 
     utils.setConditionalPageBuild();
 
-    const cachePaths: string[] = await utils.getBuildOutputPaths();
-    const restoreKeys: string[] = utils.getInputAsArray(Inputs.RestoreKeys);
+    const cachePaths = await utils.getBuildOutputPaths();
+    const restoreKeys = utils.getInputAsArray(Inputs.RestoreKeys);
 
-    let primaryKey: string = core.getInput(Inputs.Key);
+    let primaryKey = core.getInput(Inputs.Key);
     if (!primaryKey) {
-      const platform: Runner = process.env[Platform.RunnerOs] as Runner;
+      const platform = process.env[Platform.RunnerOs] as Runner;
       primaryKey = `${platform}-gatsby-build-`;
     }
 
@@ -53,10 +53,7 @@ async function restoreImpl(
 
     stateProvider.setState(State.CacheMatchedKey, cacheKey);
 
-    const isExactKeyMatch: boolean = utils.isExactKeyMatch(
-      primaryKey,
-      cacheKey
-    );
+    const isExactKeyMatch = utils.isExactKeyMatch(primaryKey, cacheKey);
 
     core.setOutput(Outputs.CacheHit, isExactKeyMatch.toString());
     core.info(`Cache restored from key: ${cacheKey}`);

@@ -63171,7 +63171,7 @@ const cache = __importStar(__nccwpck_require__(7799));
 const core = __importStar(__nccwpck_require__(2186));
 const utils = __importStar(__nccwpck_require__(6850));
 const constants_1 = __nccwpck_require__(9042);
-process.on("uncaughtException", (error) => utils.logWarning(error.message));
+process.on("uncaughtException", (e) => utils.logWarning(e.message));
 async function saveImpl(stateProvider) {
     let cacheId = -1;
     try {
