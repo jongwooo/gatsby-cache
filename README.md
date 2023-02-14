@@ -40,13 +40,13 @@ This action currently caches the following directories:
   with:
    node-version: 18
 
-- uses: jongwooo/gatsby-cache@main
+- uses: jongwooo/gatsby-cache@v1.4.2
 
 - name: Install dependencies
-  run: yarn install
+  run: npm ci
 
 - name: Build
-  run: yarn build
+  run: npm run build
 ```
 
 ## Contributing
