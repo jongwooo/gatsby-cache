@@ -1,4 +1,4 @@
-# gatsby-cache
+# Gatsby Cache
 
 This action allows caching build outputs for Gatsby's [Conditional Page Build](https://www.gatsbyjs.com/docs/reference/release-notes/v3.0/#incremental-builds-in-oss).
 
