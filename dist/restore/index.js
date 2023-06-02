@@ -59126,30 +59126,30 @@ var Inputs;
     Inputs["UseCache"] = "use-cache";
     Inputs["Key"] = "key";
     Inputs["RestoreKeys"] = "restore-keys";
-})(Inputs = exports.Inputs || (exports.Inputs = {}));
+})(Inputs || (exports.Inputs = Inputs = {}));
 var Outputs;
 (function (Outputs) {
     Outputs["CacheHit"] = "cache-hit";
-})(Outputs = exports.Outputs || (exports.Outputs = {}));
+})(Outputs || (exports.Outputs = Outputs = {}));
 var State;
 (function (State) {
     State["CachePrimaryKey"] = "CACHE_KEY";
     State["CacheMatchedKey"] = "CACHE_RESULT";
-})(State = exports.State || (exports.State = {}));
+})(State || (exports.State = State = {}));
 var Events;
 (function (Events) {
     Events["Key"] = "GITHUB_EVENT_NAME";
-})(Events = exports.Events || (exports.Events = {}));
+})(Events || (exports.Events = Events = {}));
 var Platform;
 (function (Platform) {
     Platform["RunnerOs"] = "RUNNER_OS";
-})(Platform = exports.Platform || (exports.Platform = {}));
+})(Platform || (exports.Platform = Platform = {}));
 var Gatsby;
 (function (Gatsby) {
     Gatsby["CacheDir"] = ".cache";
     Gatsby["PublicDir"] = "public";
     Gatsby["Env"] = "GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES";
-})(Gatsby = exports.Gatsby || (exports.Gatsby = {}));
+})(Gatsby || (exports.Gatsby = Gatsby = {}));
 exports.RefKey = "GITHUB_REF";
 
 
