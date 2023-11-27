@@ -40,7 +40,7 @@ This action currently caches the following directories:
   with:
    node-version: 20
 
-- uses: jongwooo/gatsby-cache@v1.4.6
+- uses: jongwooo/gatsby-cache@v1
 
 - name: Install dependencies
   run: npm ci
