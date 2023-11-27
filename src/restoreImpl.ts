@@ -7,7 +7,7 @@ import { BaseStateProvider } from "./stateProvider";
 type Runner = "Linux" | "Windows" | "macOS";
 
 async function restoreImpl(
-  stateProvider: BaseStateProvider
+  stateProvider: BaseStateProvider,
 ): Promise<string | undefined> {
   try {
     if (!utils.isCacheFeatureAvailable()) {
@@ -18,7 +18,7 @@ async function restoreImpl(
     if (!utils.isValidEvent()) {
       const eventName = process.env[Events.Key] || "";
       utils.logWarning(
-        `Event Validation Error: The event type ${eventName} is not supported because it's not tied to a branch or tag ref.`
+        `Event Validation Error: The event type ${eventName} is not supported because it's not tied to a branch or tag ref.`,
       );
       return;
     }
@@ -40,12 +40,12 @@ async function restoreImpl(
     const cacheKey: string | undefined = await cache.restoreCache(
       cachePaths,
       primaryKey,
-      restoreKeys
+      restoreKeys,
     );
 
     if (!cacheKey) {
       core.info(
-        `Cache not found for keys: ${[primaryKey, ...restoreKeys].join(", ")}`
+        `Cache not found for keys: ${[primaryKey, ...restoreKeys].join(", ")}`,
       );
 
       return;
