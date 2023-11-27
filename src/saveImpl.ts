@@ -7,7 +7,7 @@ import { BaseStateProvider } from "./stateProvider";
 process.on("uncaughtException", (e) => utils.logWarning(e.message));
 
 async function saveImpl(
-  stateProvider: BaseStateProvider
+  stateProvider: BaseStateProvider,
 ): Promise<number | void> {
   let cacheId = -1;
   try {
@@ -28,7 +28,7 @@ async function saveImpl(
 
     if (utils.isExactKeyMatch(primaryKey, state)) {
       core.info(
-        `Cache hit occurred on the primary key ${primaryKey}, not saving cache.`
+        `Cache hit occurred on the primary key ${primaryKey}, not saving cache.`,
       );
       return;
     }
