@@ -38,9 +38,9 @@ This action currently caches the following directories:
 - name: Set up Node.js
   uses: actions/setup-node@v3
   with:
-   node-version: 18
+   node-version: 20
 
-- uses: jongwooo/gatsby-cache@v1.4.2
+- uses: jongwooo/gatsby-cache@v1.4.6
 
 - name: Install dependencies
   run: npm ci

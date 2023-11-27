@@ -5,16 +5,19 @@ on:
     paths:
       - src/**/*.ts
 
+env:
+  NODE_VERSION: 20.x
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js 16.x
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Install dependencies
