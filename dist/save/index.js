@@ -59526,7 +59526,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getBuildOutputPaths = exports.setConditionalPageBuild = exports.isCacheFeatureAvailable = exports.getInputAsArray = exports.isValidEvent = exports.logWarning = exports.isExactKeyMatch = exports.isGhes = void 0;
+exports.isGhes = isGhes;
+exports.isExactKeyMatch = isExactKeyMatch;
+exports.logWarning = logWarning;
+exports.isValidEvent = isValidEvent;
+exports.getInputAsArray = getInputAsArray;
+exports.isCacheFeatureAvailable = isCacheFeatureAvailable;
+exports.setConditionalPageBuild = setConditionalPageBuild;
+exports.getBuildOutputPaths = getBuildOutputPaths;
 const cache = __importStar(__nccwpck_require__(7799));
 const core = __importStar(__nccwpck_require__(2186));
 const path_1 = __importDefault(__nccwpck_require__(1017));
@@ -59536,23 +59543,19 @@ function isGhes() {
     const ghUrl = new URL(url);
     return ghUrl.hostname.toUpperCase() !== "GITHUB.COM";
 }
-exports.isGhes = isGhes;
 function isExactKeyMatch(key, cacheKey) {
     return !!(cacheKey &&
         cacheKey.localeCompare(key, undefined, {
             sensitivity: "accent",
         }) === 0);
 }
-exports.isExactKeyMatch = isExactKeyMatch;
 function logWarning(message) {
     const warningPrefix = "[warning]";
     core.info(`${warningPrefix}${message}`);
 }
-exports.logWarning = logWarning;
 function isValidEvent() {
     return constants_1.RefKey in process.env && Boolean(process.env[constants_1.RefKey]);
 }
-exports.isValidEvent = isValidEvent;
 function getInputAsArray(name, options) {
     return core
         .getInput(name, options)
@@ -59560,7 +59563,6 @@ function getInputAsArray(name, options) {
         .map((s) => s.replace(/^!\s+/, "!").trim())
         .filter((x) => x !== "");
 }
-exports.getInputAsArray = getInputAsArray;
 function isCacheFeatureAvailable() {
     if (cache.isFeatureAvailable()) {
         return true;
@@ -59573,12 +59575,10 @@ Otherwise please upgrade to GHES version >= 3.5 and If you are also using Github
     logWarning("An internal error has occurred in cache backend. Please check https://www.githubstatus.com/ for any ongoing issue in actions.");
     return false;
 }
-exports.isCacheFeatureAvailable = isCacheFeatureAvailable;
 function setConditionalPageBuild() {
     process.env[constants_1.Gatsby.Env] = "true";
     core.debug(`Set ${constants_1.Gatsby.Env}=${process.env[constants_1.Gatsby.Env]}`);
 }
-exports.setConditionalPageBuild = setConditionalPageBuild;
 async function getBuildOutputPaths() {
     const targetPaths = [constants_1.Gatsby.CacheDir, constants_1.Gatsby.PublicDir];
     const buildOutputPaths = [];
@@ -59587,7 +59587,6 @@ async function getBuildOutputPaths() {
     }
     return buildOutputPaths;
 }
-exports.getBuildOutputPaths = getBuildOutputPaths;
 
 
 /***/ }),
