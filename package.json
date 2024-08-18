@@ -7,7 +7,7 @@
   "scripts": {
     "format": "biome format ./src",
     "format:fix": "biome format --write ./src",
-    "lint": "tsc --noEmit && eslint 'src/**/*.ts'",
+    "lint": "tsc --noEmit && biome lint ./src",
     "build": "ncc build -o dist/restore src/restore.ts && ncc build -o dist/save src/save.ts"
   },
   "repository": {
