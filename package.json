@@ -5,9 +5,9 @@
   "description": "Cache build outputs for Gatsby's Conditional Page Build",
   "author": "jongwooo <jongwooo.han@gmail.com>",
   "scripts": {
-    "format": "prettier --check 'src/**/*.ts'",
-    "format:fix": "prettier --write 'src/**/*.ts'",
-    "lint": "tsc --noEmit && eslint 'src/**/*.ts'",
+    "format": "biome format ./src",
+    "format:fix": "biome format --write ./src",
+    "lint": "tsc --noEmit && biome lint ./src",
     "build": "ncc build -o dist/restore src/restore.ts && ncc build -o dist/save src/save.ts"
   },
   "repository": {
@@ -26,14 +26,9 @@
   },
   "homepage": "https://github.com/jongwooo/gatsby-cache#readme",
   "devDependencies": {
+    "@biomejs/biome": "1.8.3",
     "@types/node": "^22.4.0",
-    "@typescript-eslint/eslint-plugin": "^8.1.0",
-    "@typescript-eslint/parser": "^8.1.0",
     "@vercel/ncc": "^0.38.1",
-    "eslint": "^9.9.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "prettier": "^3.3.3",
     "typescript": "^5.5.4"
   },
   "dependencies": {
